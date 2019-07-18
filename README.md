@@ -1,12 +1,13 @@
 # DeepLab with PyTorch <!-- omit in toc --> 
 
-This is an unofficial **PyTorch** modification of **DeepLab v2** [[1](##references)] with a **ResNet-101** backbone.
+This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet-101** backbone.
 
-We use a model trained on **COCO-Stuff 164K** dataset [[2](##references)]. 
+We use a model trained on **COCO-Stuff 164K** dataset. 
 
 ## Performance
 
-Pretrained model is provided here: 
+Pretrained model is provided here: [
+deeplabv2_resnet101_msc-cocostuff164k](https://drive.google.com/file/d/18kR928yl9Hz4xxuxnYgg7Hpi36hM8J2d/view)
 
 ## Setup
 
