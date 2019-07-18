@@ -1,4 +1,4 @@
-# DeepLab with PyTorch <!-- omit in toc --> 
+# DeepLab To Segment the Flood <!-- omit in toc --> 
 
 This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet-101** backbone. Most of the code has been taken from this repository: [kazuto1011/deeplab-pytorch](https://github.com/kazuto1011/deeplab-pytorch)
 
