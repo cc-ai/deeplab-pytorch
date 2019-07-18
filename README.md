@@ -1,15 +1,31 @@
-# DeepLab To Segment the Flood <!-- omit in toc --> 
+# DeepLab To Segment water in flood images <!-- omit in toc --> 
 
 This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet-101** backbone. Most of the code has been taken from this repository: [kazuto1011/deeplab-pytorch](https://github.com/kazuto1011/deeplab-pytorch)
 
-We use their model trained on **COCO-Stuff 164K** dataset. 
+We use their model trained on **COCO-Stuff 164K** dataset and merged some [labels](https://github.com/nightrome/cocostuff/blob/master/labels.md) to output a binary mask of water.
+
+Merged labels: 
+
+- water-other
+- river
+- sand
+- sea
+
+## Performance
+Quantifying the performance on 210 flood images annotated manually the model achieve a good IOU of **IOU = 0.786** (without crf) 
+Looking at the results individually we remark that most of them are either well segmented or very badly (in the case of when the algorithm recognize the road under the flood and label it as 'road'. With a simple post processing where the user remove all images with less than 50 % of the flood identified, one may reach **IOU = 0.861** (without crf)
+
+Here is an example of a good segmentation. 
+
+<img src="flood-segmented.png" alt="flood-segmented" width="300"/>
+
+CRF should increase the performance but is slower at inference time (9s/it vs several it/s).
 
 ## Pretrained Model
 
 Pretrained model is provided here: [
 deeplabv2_resnet101_msc-cocostuff164k](https://drive.google.com/file/d/18kR928yl9Hz4xxuxnYgg7Hpi36hM8J2d/view)
 
-## Performance
 
 ### Requirements
 
@@ -23,7 +39,7 @@ $ conda env create -f configs/conda_env.yaml
 $ conda activate deeplab-pytorch
 ```
 
-## Inference
+## How to use ?
 
 ### Single image
 
@@ -63,7 +79,6 @@ Example:
 ``` 
 python demo.py test -c ./configs/cocostuff164k.yaml -m ./deeplabv2_resnet101_msc-cocostuff164k-100000.pth -i ./Dataset/flood_dataset/ -o ./output/predicted_crf/ --crf 
 ```
-
 
 ## References
 
