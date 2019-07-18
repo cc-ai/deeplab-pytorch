@@ -11,9 +11,15 @@ Merged labels:
 - sand
 - sea
 
+For more info on how we selected this model one should look at this thread: [cc-ai/kdb/issues/62](https://github.com/cc-ai/kdb/issues/62)
+
 ## Performance
-Quantifying the performance on 210 flood images annotated manually the model achieve a good IOU of **IOU = 0.786** (without crf) 
-Looking at the results individually we remark that most of them are either well segmented or very badly (in the case of when the algorithm recognize the road under the flood and label it as 'road'. With a simple post processing where the user remove all images with less than 50 % of the flood identified, one may reach **IOU = 0.861** (without crf)
+
+Evaluating on our dataset of manually annotated 210 images of flood, without the CRF post processing, results appear very good, the mean **IOU is about 79%** with some example that totally fail.
+
+A good way of using it would be to process our entire dataset and remove manually every image with less than 50% of water covered. If we do that post evaluation on the 210 images, we keep 88 % of them and increase the **IOU to 86%**. Further filtering could be done..
+
+
 
 Here is an example of a good segmentation. 
 
