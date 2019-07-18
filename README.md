@@ -4,10 +4,13 @@ This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet
 
 We use a model trained on **COCO-Stuff 164K** dataset. 
 
-## Performance
+## Pretrained Model
 
 Pretrained model is provided here: [
 deeplabv2_resnet101_msc-cocostuff164k](https://drive.google.com/file/d/18kR928yl9Hz4xxuxnYgg7Hpi36hM8J2d/view)
+
+
+## Performance
 
 ## Setup
 
@@ -22,13 +25,6 @@ Then setup from `conda_env.yaml`. Please modify cuda option as needed (default: 
 $ conda env create -f configs/conda_env.yaml
 $ conda activate deeplab-pytorch
 ```
-
-### Datasets
-
-Setup instruction is provided in each link.
-
-* [COCO-Stuff 10k/164k](data/datasets/cocostuff/README.md)
-
 
 ### Single image
 
@@ -61,6 +57,12 @@ Options:
   --cuda / --cpu              Enable CUDA if available [default: --cuda]
   --crf                       CRF post-processing  [default: False]
   --help                      Show this message and exit.
+```
+
+Example: 
+
+``` 
+python demo.py test -c ./configs/cocostuff164k.yaml -m ./deeplabv2_resnet101_msc-cocostuff164k-100000.pth -i ./Dataset/flood_dataset/ -o ./output/predicted_crf/ --crf 
 ```
 
 
