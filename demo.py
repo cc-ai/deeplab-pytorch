@@ -21,7 +21,8 @@ from addict import Dict
 
 from libs.models import *
 from libs.utils import DenseCRF
-
+import tqdm as tq
+import os
 
 def get_device(cuda):
     cuda = cuda and torch.cuda.is_available()
@@ -158,7 +159,8 @@ def single(config_path, model_path, image_path, cuda, crf):
     image, raw_image = preprocessing(image, device, CONFIG)
     labelmap = inference(model, image, raw_image, postprocessor)
     labels = np.unique(labelmap)
-
+    print('saving labels')
+    cv2.imwrite('./label.png',labelmap)
     # Show result for each class
     rows = np.floor(np.sqrt(len(labels) + 1))
     cols = np.ceil((len(labels) + 1) / rows)
@@ -257,7 +259,87 @@ def live(config_path, model_path, cuda, crf, camera_id):
         cv2.imshow(window_name, raw_image)
         if cv2.waitKey(10) == ord("q"):
             break
+            
+@main.command()
+@click.option(
+    "-c",
+    "--config-path",
+    type=click.File(),
+    required=True,
+    help="Dataset configuration file in YAML",
+)
+@click.option(
+    "-m",
+    "--model-path",
+    type=click.Path(exists=True),
+    required=True,
+    help="PyTorch model to be loaded",
+)
+@click.option(
+    "-i",
+    "--folder_path",
+    type=click.Path(exists=True),
+    required=True,
+    help="Folder of image to be processed",
+)
+@click.option(
+    "-o",
+    "--output_folder",
+    type=click.Path(exists=True),
+    required=True,
+    help="Folder to store output",
+)
+@click.option(
+    "--cuda/--cpu", default=True, help="Enable CUDA if available [default: --cuda]"
+)
+@click.option("--crf", is_flag=True, show_default=True, help="CRF post-processing")
+def test(config_path, model_path, folder_path, output_folder, cuda, crf):
+    
+    """
+    Inference on several images
+    """
 
+    # Setup
+    CONFIG        = Dict(yaml.load(config_path))
+    device        = get_device(cuda)
+    torch.set_grad_enabled(False)
 
+    classes       = get_classtable(CONFIG)
+    postprocessor = setup_postprocessor(CONFIG) if crf else None
+
+    model = eval(CONFIG.MODEL.NAME)(n_classes=CONFIG.DATASET.N_CLASSES)
+    state_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
+    model.load_state_dict(state_dict)
+    model.eval()
+    model.to(device)
+    
+    print("Model:", CONFIG.MODEL.NAME)
+
+    
+    # Inference
+    im_list = os.listdir(folder_path)
+    
+    for im_ in im_list:
+        
+        print('processing im',im_)
+        
+        image_path       = folder_path + im_
+        image            = cv2.imread(image_path, cv2.IMREAD_COLOR)
+        im_shape         = image.shape
+        image, raw_image = preprocessing(image, device, CONFIG)
+        
+        labelmap         = inference(model, image, raw_image, postprocessor)
+        labels           = np.unique(labelmap)
+        
+        mask             = (((labelmap == 177) | \
+                             (labelmap==147)   | \
+                             (labelmap==153)   |\
+                             (labelmap==155)) * 255).astype('uint8')
+        
+        mask             = cv2.resize(mask, (im_shape[1],im_shape[0]))
+        ret, mask        = cv2.threshold(mask, 127, 1, cv2.THRESH_BINARY) 
+        
+        cv2.imwrite(output_folder+im_,mask)
+        
 if __name__ == "__main__":
     main()
