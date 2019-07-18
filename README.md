@@ -1,8 +1,8 @@
 # DeepLab with PyTorch <!-- omit in toc --> 
 
-This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet-101** backbone. Most of the code come from this repository: [kazuto1011/deeplab-pytorch](https://github.com/kazuto1011/deeplab-pytorch)
+This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet-101** backbone. Most of the code has been taken from this repository: [kazuto1011/deeplab-pytorch](https://github.com/kazuto1011/deeplab-pytorch)
 
-We use a model trained on **COCO-Stuff 164K** dataset. 
+We use their model trained on **COCO-Stuff 164K** dataset. 
 
 ## Pretrained Model
 
