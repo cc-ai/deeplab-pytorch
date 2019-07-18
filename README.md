@@ -1,6 +1,6 @@
 # DeepLab with PyTorch <!-- omit in toc --> 
 
-This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet-101** backbone.
+This is an unofficial **PyTorch** modification of **DeepLab v2** with a **ResNet-101** backbone. Most of the code come from this repository: [kazuto1011/deeplab-pytorch](https://github.com/kazuto1011/deeplab-pytorch)
 
 We use a model trained on **COCO-Stuff 164K** dataset. 
 
@@ -9,10 +9,7 @@ We use a model trained on **COCO-Stuff 164K** dataset.
 Pretrained model is provided here: [
 deeplabv2_resnet101_msc-cocostuff164k](https://drive.google.com/file/d/18kR928yl9Hz4xxuxnYgg7Hpi36hM8J2d/view)
 
-
 ## Performance
-
-## Setup
 
 ### Requirements
 
@@ -25,6 +22,8 @@ Then setup from `conda_env.yaml`. Please modify cuda option as needed (default: 
 $ conda env create -f configs/conda_env.yaml
 $ conda activate deeplab-pytorch
 ```
+
+## Inference
 
 ### Single image
 
